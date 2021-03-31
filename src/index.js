@@ -1,17 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from 'react-router-dom';
+import {Provider} from 'react-redux';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import App from './components/app/app';
+import store from './store';
+import ErrorBoundry from './components/error-boundry';
+import {StoreServiceProvider} from './components/context';
+import StoreService from './services/store-services';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const storeService = new StoreService();
+
+ReactDOM.render (
+    <Provider store={store}>
+        <ErrorBoundry>
+            <StoreServiceProvider value={storeService}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </StoreServiceProvider>
+        </ErrorBoundry>
+    </Provider>, document.getElementById('root'));
